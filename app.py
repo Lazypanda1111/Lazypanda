@@ -109,7 +109,7 @@ df, raw = get_data_and_signal()
 # ==========================================
 # 4. 主界面逻辑
 # ==========================================
-st.title("🐨 Panda Strategy (LNAS/HNDQ Version)")
+st.title("🐨 Panda kills whales")
 
 next_rebal, is_today_rebal, days_left = get_rebalance_info()
 
@@ -305,4 +305,5 @@ if df is not None:
 
 else:
     st.info("🐨 熊猫正在抓取最新数据...")
+
 
