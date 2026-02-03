@@ -144,7 +144,7 @@ if df is not None:
         drop_val = latest['SPY_Drop_N']
         
         st.metric("SPY vs 200线", f"${latest['SPY']:.0f}", f"{spy_dist*100:+.1f}%")
-        st.metric("HNDQ 95日动量", f"${latest['QQQ']:.0f}", f"{mom_val*100:+.1f}%")
+        st.metric("QQQ 95日动量", f"${latest['QQQ']:.0f}", f"{mom_val*100:+.1f}%")
         # 熔断监控
         delta_color = "off" if drop_val < -0.05 else "normal"
         st.metric("SPY 5日跌幅 (熔断线 -7.5%)", f"{drop_val*100:.2f}%", delta_color=delta_color)
