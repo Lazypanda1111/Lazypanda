@@ -1,0 +1,45 @@
+name: Build Year 11 Physics Paper Pack
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - tools/download_y11_physics.py
+      - .github/workflows/build-y11-physics-pack.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-pack:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out temporary downloader branch
+        uses: actions/checkout@v4
+
+      - name: Download and validate public PDFs
+        id: download
+        continue-on-error: true
+        run: python3 tools/download_y11_physics.py
+
+      - name: Inspect bundle
+        run: |
+          test -d bundle
+          find bundle -maxdepth 1 -type f -printf '%f\n' | sort
+          count=$(find bundle -maxdepth 1 -type f -name '*.pdf' | wc -l)
+          echo "PDF count: $count"
+          for f in bundle/*.pdf; do
+            test -f "$f" || continue
+            file "$f"
+            head -c 5 "$f" | grep -q '%PDF'
+          done
+
+      - name: Upload paper bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Sydney_Selective_Year11_Physics_Recent
+          path: bundle/
+          if-no-files-found: error
+          retention-days: 7
